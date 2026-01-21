@@ -1,0 +1,293 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.sidebar {
+  width: 220px;
+  background: #111827;
+  color: white;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  margin-bottom: 30px;
+}
+
+.logout-btn {
+  background: #ef4444;
+  border: none;
+  padding: 10px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.main-content {
+  flex: 1;
+  padding: 30px;
+  background: #f9fafb;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.forms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.form-card {
+  background: white;
+  padding: 18px;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.card-actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.card-actions button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #4f46e5;
+  color: white;
+}
+
+.card-actions .danger {
+  background: #dc2626;
+}
+
+/* MODAL */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: white;
+  width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 25px;
+  border-radius: 12px;
+}
+
+.response-card {
+  background: #f3f4f6;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.close-btn {
+  margin-top: 15px;
+  background: #111827;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.top-actions {
+  margin-bottom: 20px;
+}
+
+.primary-btn {
+  background: #4f46e5;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.builder {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 700px;
+}
+
+.builder-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+.field-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.field-row input,
+.field-row select {
+  padding: 8px;
+}
+/* ============================= */
+/* CREATE FORM – PREMIUM UI */
+/* ============================= */
+
+.builder-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.builder-card {
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 900px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+  animation: fadeUp 0.4s ease;
+}
+
+@keyframes fadeUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.builder-card h2 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.builder-subtitle {
+  color: #6b7280;
+  margin-bottom: 25px;
+  font-size: 14px;
+}
+
+/* FORM TITLE */
+.builder-title-input {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 16px;
+  margin-bottom: 25px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  outline: none;
+}
+
+.builder-title-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* FIELD CARD */
+.field-card {
+  background: #f9fafb;
+  padding: 18px;
+  border-radius: 14px;
+  margin-bottom: 14px;
+  border: 1px solid #e5e7eb;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.field-row input,
+.field-row select {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+  outline: none;
+}
+
+.field-row input:focus,
+.field-row select:focus {
+  border-color: #6366f1;
+}
+
+/* OPTIONS INPUT */
+.options-input {
+  margin-top: 12px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px dashed #c7d2fe;
+  background: #eef2ff;
+  font-size: 14px;
+}
+
+/* REMOVE FIELD */
+.remove-btn {
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.remove-btn:hover {
+  background: #fecaca;
+}
+
+/* ACTION BUTTONS */
+.builder-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 20px;
+}
+
+.secondary-btn {
+  background: #cfcdcd;
+  border: 1px solid #e5e7eb;
+  padding: 4px 38px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #000000;
+}
+
+.secondary-btn:hover {
+  background: #e5e7eb;
+}
+
+.primary-btn {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(79, 70, 229, 0.35);
+}
+
+.primary-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 26px rgba(79, 70, 229, 0.45);
+}
