@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebase/firebase";
 import { useNavigate } from "react-router-dom";
 import API from "../../api/api";
 import "../../styles/user.css";
@@ -9,32 +7,39 @@ const UserHome = () => {
   const navigate = useNavigate();
   const [forms, setForms] = useState([]);
 
-  const user = auth.currentUser;
+  // JWT-based user info
+  const userEmail = localStorage.getItem("email"); // optional
+  const userRole = localStorage.getItem("role");
 
-  const logout = async () => {
-    await signOut(auth);
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("email");
     navigate("/login");
   };
 
   useEffect(() => {
     const fetchForms = async () => {
-      const res = await API.get("/forms");
-      setForms(res.data);
+      try {
+        const res = await API.get("/forms");
+        setForms(res.data);
+      } catch (err) {
+        console.error("Failed to fetch forms", err);
+      }
     };
     fetchForms();
   }, []);
 
   return (
     <div className="user-dashboard">
-
       {/* SIDEBAR */}
       <aside className="user-sidebar">
         <div className="profile-box">
           <div className="avatar">
-            {user?.email?.charAt(0).toUpperCase()}
+            {userEmail ? userEmail.charAt(0).toUpperCase() : "U"}
           </div>
-          <h3>{user?.email}</h3>
-          <p>User Account</p>
+          <h3>{userEmail || "User"}</h3>
+          <p>{userRole === "user" ? "User Account" : "Account"}</p>
         </div>
 
         <nav className="user-nav">
@@ -62,9 +67,7 @@ const UserHome = () => {
 
               <button
                 className="fill-btn"
-                onClick={() =>
-                  navigate(`/user/form/${form._id}`)
-                }
+                onClick={() => navigate(`/user/form/${form._id}`)}
               >
                 Fill Form
               </button>
@@ -72,7 +75,6 @@ const UserHome = () => {
           ))}
         </div>
       </main>
-
     </div>
   );
 };

@@ -5,10 +5,12 @@ import UserRegister from "./pages/auth/UserRegister";
 import AdminLogin from "./pages/auth/AdminLogin";
 
 import UserHome from "./pages/user/UserHome";
+import UserFormFill from "./pages/user/UserFormFill";
+
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import CreateForm from "./pages/admin/CreateForm";
 import EditForm from "./pages/admin/EditForm";
-import UserFormFill from "./pages/user/UserFormFill";
+
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -23,47 +25,49 @@ function App() {
       <Route path="/register" element={<UserRegister />} />
       <Route path="/admin/login" element={<AdminLogin />} />
 
-      {/* USER DASHBOARD */}
+      {/* USER ROUTES */}
       <Route
         path="/user"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute role="user">
             <UserHome />
           </ProtectedRoute>
         }
       />
-<Route
-  path="/user/form/:id"
-  element={
-    <ProtectedRoute>
-      <UserFormFill />
-    </ProtectedRoute>
-  }
-/>
-      {/* ADMIN DASHBOARD */}
+
+      <Route
+        path="/user/form/:id"
+        element={
+          <ProtectedRoute role="user">
+            <UserFormFill />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* ADMIN ROUTES */}
       <Route
         path="/admin"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute role="admin">
             <AdminDashboard />
           </ProtectedRoute>
         }
       />
-<Route
-  path="/admin/edit-form/:id"
-  element={
-    <ProtectedRoute>
-      <EditForm />
-    </ProtectedRoute>
-  }
-/>
 
-      {/* ✅ CREATE FORM PAGE (THIS WAS MISSING) */}
       <Route
         path="/admin/create-form"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute role="admin">
             <CreateForm />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/edit-form/:id"
+        element={
+          <ProtectedRoute role="admin">
+            <EditForm />
           </ProtectedRoute>
         }
       />

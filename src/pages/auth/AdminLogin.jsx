@@ -1,58 +1,75 @@
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase/firebase";
 import { useNavigate, Link } from "react-router-dom";
+import API from "../../api/api";
 import "./auth.css";
 
-const AdminLogin = () => {
+const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleAdminLogin = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-
-    if (!email.endsWith("@admin.com")) {
-      alert("You are not authorized as Admin");
-      return;
-    }
+    setLoading(true);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate("/admin");
+      const res = await API.post("/auth/login", {
+        email,
+        password
+      });
+
+      // 🔐 Save token & role
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", res.data.role);
+
+      // 🔁 Redirect based on role
+      if (res.data.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/user");
+      }
     } catch (err) {
-      alert(err.message);
+      alert(err.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="auth-wrapper admin-bg">
-      <div className="auth-card admin-card">
-        <h2>Admin Panel 🔐</h2>
-        <p className="subtitle">Login to manage forms & responses</p>
+    <div className="auth-wrapper">
+      <div className="auth-card">
+        <h2>Welcome Back 👋</h2>
+        <p className="subtitle">Login to continue</p>
 
-        <form onSubmit={handleAdminLogin}>
+        <form onSubmit={handleLogin}>
           <input
             type="email"
-            placeholder="Admin Email"
+            placeholder="Email address"
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+
           <input
             type="password"
             placeholder="Password"
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
 
-          <button className="primary-btn admin-btn" type="submit">
-            Login as Admin
+          <button className="primary-btn" type="submit" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
         <div className="links">
           <p>
-            Normal User? <Link to="/login">Login here</Link>
+            New user? <Link to="/register">Register</Link>
+          </p>
+          <p>
+            Admin? <Link to="/admin/login">Login here</Link>
           </p>
         </div>
       </div>
@@ -60,4 +77,4 @@ const AdminLogin = () => {
   );
 };
 
-export default AdminLogin;
+export default UserLogin;

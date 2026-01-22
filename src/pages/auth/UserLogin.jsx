@@ -1,33 +1,39 @@
 import { useState } from "react";
-import {
-  signInWithEmailAndPassword,
-  signInWithPopup
-} from "firebase/auth";
-import { auth, googleProvider } from "../../firebase/firebase";
 import { useNavigate, Link } from "react-router-dom";
+import API from "../../api/api";
 import "./auth.css";
 
 const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate("/user");
-    } catch (err) {
-      alert(err.message);
-    }
-  };
+    setLoading(true);
 
-  const handleGoogleLogin = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
-      navigate("/user");
+      const res = await API.post("/auth/login", {
+        email,
+        password
+      });
+
+      // Save auth data
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", res.data.role);
+      localStorage.setItem("email", res.data.email);
+
+      // Redirect based on role
+      if (res.data.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/user");
+      }
     } catch (err) {
-      alert(err.message);
+      alert(err.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -41,30 +47,23 @@ const UserLogin = () => {
           <input
             type="email"
             placeholder="Email address"
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+
           <input
             type="password"
             placeholder="Password"
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
 
-          <button className="primary-btn" type="submit">
-            Login
+          <button className="primary-btn" type="submit" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
-
-        <div className="divider">OR</div>
-
-        <button className="google-btn" onClick={handleGoogleLogin}>
-          <img
-            src="https://developers.google.com/identity/images/g-logo.png"
-            alt="google"
-          />
-          Sign in with Google
-        </button>
 
         <div className="links">
           <p>

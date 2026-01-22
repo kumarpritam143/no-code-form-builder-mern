@@ -1,5 +1,3 @@
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebase/firebase";
 import { useNavigate } from "react-router-dom";
 import FormsList from "./FormsList";
 import "../../styles/admin.css";
@@ -7,8 +5,10 @@ import "../../styles/admin.css";
 const AdminDashboard = () => {
   const navigate = useNavigate();
 
-  const logout = async () => {
-    await signOut(auth);
+  const logout = () => {
+    // 🔐 JWT logout
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
     navigate("/login");
   };
 
