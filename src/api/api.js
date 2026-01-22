@@ -1,8 +1,9 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api"
+  baseURL: "https://no-form-backend-1.onrender.com/api"
 });
+
 
 // 🔐 Automatically attach JWT token with every request
 API.interceptors.request.use(
