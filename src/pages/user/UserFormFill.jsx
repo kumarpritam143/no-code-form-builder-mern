@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import API from "../../api/api";
-import "../../styles/user.css";
+import "../../styles/userForm.css";
 
 const UserFormFill = () => {
   const { id } = useParams();
@@ -34,83 +34,97 @@ const UserFormFill = () => {
     navigate("/user");
   };
 
-  if (!form) return <p>Loading...</p>;
+  if (!form) return <p className="loading">Loading form...</p>;
 
   return (
-    <div className="fill-wrapper">
-      <form className="fill-card" onSubmit={handleSubmit}>
+    <div className="form-page">
+      <div className="form-card">
+
         <h2>{form.title}</h2>
-        <p className="subtitle">Please fill the form below</p>
+        <p className="subtitle">
+          Please fill the form below
+        </p>
 
-        {form.fields.map((field, index) => (
-          <div className="fill-field" key={index}>
-            <label>{field.label}</label>
+        <form onSubmit={handleSubmit}>
+          {form.fields.map((field, i) => (
+            <div className="form-group" key={i}>
+              <label>{field.label}</label>
 
-            {field.type === "text" && (
-              <input
-                required={field.required}
-                onChange={(e) =>
-                  handleChange(field.label, e.target.value)
-                }
-              />
-            )}
+              {field.type === "text" && (
+                <input
+                  type="text"
+                  placeholder="Enter answer"
+                  onChange={(e) =>
+                    handleChange(field.label, e.target.value)
+                  }
+                  required
+                />
+              )}
 
-            {field.type === "radio" &&
-              field.options.map((opt, i) => (
-                <div key={i} className="option-row">
-                  <input
-                    type="radio"
-                    name={field.label}
-                    value={opt}
-                    onChange={() =>
-                      handleChange(field.label, opt)
-                    }
-                  />
-                  <span>{opt}</span>
+              {field.type === "dropdown" && (
+                <select
+                  onChange={(e) =>
+                    handleChange(field.label, e.target.value)
+                  }
+                  required
+                >
+                  <option value="">Select option</option>
+                  {field.options.map((opt, idx) => (
+                    <option key={idx} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
+              )}
+
+              {field.type === "radio" && (
+                <div className="option-group">
+                  {field.options.map((opt, idx) => (
+                    <label key={idx} className="option-item">
+                      <input
+                        type="radio"
+                        name={field.label}
+                        value={opt}
+                        onChange={(e) =>
+                          handleChange(field.label, e.target.value)
+                        }
+                        required
+                      />
+                      {opt}
+                    </label>
+                  ))}
                 </div>
-              ))}
+              )}
 
-            {field.type === "checkbox" &&
-              field.options.map((opt, i) => (
-                <div key={i} className="option-row">
-                  <input
-                    type="checkbox"
-                    value={opt}
-                    onChange={(e) => {
-                      const prev = answers[field.label] || [];
-                      if (e.target.checked) {
-                        handleChange(field.label, [...prev, opt]);
-                      } else {
-                        handleChange(
-                          field.label,
-                          prev.filter((o) => o !== opt)
-                        );
-                      }
-                    }}
-                  />
-                  <span>{opt}</span>
+              {field.type === "checkbox" && (
+                <div className="option-group">
+                  {field.options.map((opt, idx) => (
+                    <label key={idx} className="option-item">
+                      <input
+                        type="checkbox"
+                        value={opt}
+                        onChange={(e) => {
+                          const prev = answers[field.label] || [];
+                          const updated = e.target.checked
+                            ? [...prev, opt]
+                            : prev.filter((x) => x !== opt);
+
+                          handleChange(field.label, updated);
+                        }}
+                      />
+                      {opt}
+                    </label>
+                  ))}
                 </div>
-              ))}
+              )}
+            </div>
+          ))}
 
-            {field.type === "dropdown" && (
-              <select
-                onChange={(e) =>
-                  handleChange(field.label, e.target.value)
-                }
-              >
-                <option value="">Select</option>
-                {field.options.map((opt, i) => (
-                  <option key={i}>{opt}</option>
-                ))}
-              </select>
-            )}
-          </div>
-        ))}
-
-        <button className="submit-btn" type="submit">
-          Submit Form
-        </button>
-      </form>
+          <button className="submit-btn" type="submit">
+            Submit Form
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
